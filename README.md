@@ -38,6 +38,6 @@ Set-AudioDevice -ID "{0.0.0.00000000}.{876a2076-43a6-4e0d-92a9-49fcfa580025}"
 ```
 pip3 install pystray
 ```
-Also build the DisplayConfig project and copy |displayconfig.exe| next to the script.
+Also build the DisplayConfig project and copy displayconfig.exe next to the script.
 
 Edit the script, displays are dictionaries of monitor name - "on"/"off", the default audio device ID can be determined from [Default output device setter](#default-output-device-setter) by Listing.
