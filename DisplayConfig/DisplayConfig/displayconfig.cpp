@@ -1,4 +1,3 @@
-#pragma comment(lib, "dxva2")
 #pragma comment(lib, "user32")
 #include <lowlevelmonitorconfigurationapi.h>
 #include <iostream>
