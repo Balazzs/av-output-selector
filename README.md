@@ -40,4 +40,4 @@ pip3 install pystray
 ```
 Also build the DisplayConfig project and copy displayconfig.exe next to the script.
 
-Edit the script, displays are dictionaries of monitor name - "on"/"off", the default audio device ID can be determined from [Default output device setter](#default-output-device-setter) by Listing.
+Edit the config.json file, displays are dictionaries of monitor name - "on"/"off", the default audio device ID can be determined from [Default output device setter](#default-output-device-setter) by Listing.
