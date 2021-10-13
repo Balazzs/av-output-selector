@@ -1,0 +1,25 @@
+{
+	"modes": [
+
+		{
+			"name" : "Default",
+			"displays": {
+				"SAMSUNG"		: "off",
+				"ASUS VG249"	: "on",
+				"DELL P2414H"	: "on"
+			},
+			"audio" :  "{0.0.0.00000000}.{876a2076-43a6-4e0d-92a9-49fcfa580025}"
+		},
+
+		{
+			"name" : "TV",
+			"displays": {
+				"SAMSUNG"		: "on",
+				"ASUS VG249"	: "on",
+				"DELL P2414H"	: "off"
+			},
+			"audio" :  "{0.0.0.00000000}.{304e0a35-fc8d-4096-8d1e-89b00b7aaf52}"
+		}
+
+	]
+}
