@@ -15,7 +15,7 @@ Enables / Disables displays by name. Uses windows API. Made by a large amount of
 
 Requires Windows SDK (and maybe WDK ?).
 
-## Default output device setter
+## Default audio playback device setter
 
 Get https://github.com/frgnca/AudioDeviceCmdlets.
 
