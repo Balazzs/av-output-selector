@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pystray import Icon, Menu, MenuItem
 from PIL import Image, ImageDraw
 from pathlib import Path
@@ -33,13 +35,14 @@ def set_display (displays):
         icon.notify ("Error while setting displays")
 
 def set_audio (device_id):
-    pass
+    completedProcess = subprocess.run (["PowerShell.exe", "Set-AudioDevice", "-ID", f'"{device_id}"'])
+    if completedProcess.returncode != 0:
+        icon.notify ("Error setting default audio playback device")
 
 def set_mode (mode):
     icon.notify(f"Setting mode to {mode['name']}")
-    sleep (1)
     set_display (mode["displays"])
-    sleep (2)
+    sleep (1)
     set_audio (mode["audio"])
     
 
