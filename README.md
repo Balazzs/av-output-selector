@@ -15,7 +15,7 @@ Enables / Disables displays by name. Uses windows API. Made by a large amount of
 
 Requires Windows SDK (and maybe WDK ?).
 
-## Default output device setter
+## Default audio playback device setter
 
 Get https://github.com/frgnca/AudioDeviceCmdlets.
 
@@ -32,3 +32,12 @@ And set it as default with:
 ```PowerShell
 Set-AudioDevice -ID "{0.0.0.00000000}.{876a2076-43a6-4e0d-92a9-49fcfa580025}"
 ```
+
+## Tray icon python script
+
+```
+pip3 install pystray
+```
+Also build the DisplayConfig project and copy displayconfig.exe next to the script.
+
+Edit the config.json file, displays are dictionaries of monitor name - "on"/"off", the default audio device ID can be determined from [Default output device setter](#default-output-device-setter) by Listing.
