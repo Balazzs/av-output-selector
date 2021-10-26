@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 import webbrowser
 import subprocess
+import re
 from time import sleep
 
 configPath     = Path (__file__).parent / "config.json"
@@ -34,6 +35,23 @@ def set_display (displays):
     if completedProcess.returncode != 0:
         icon.notify ("Error while setting displays")
 
+def parse_audio_config():
+    completedProcess = subprocess.run(["PowerShell", "Get-AudioDevice", "-List"], capture_output=True, text=True)
+    device_strings = completedProcess.stdout.strip().split ("\n\n")
+    pattern = r"^(.*):(.*)$"
+
+    devices = []
+
+    for device_string in device_strings:
+        devices.append ({k.strip() : v.strip() for k,v in re.findall (pattern, device_string, flags=re.MULTILINE)})
+
+    return devices
+
+def load_playback_menu ():
+    devices = parse_audio_config ()
+    set_audio_generator = lambda device_id: lambda: set_audio (device_id)
+    return MenuItem ("Sound", Menu (*[MenuItem (device["Name"], set_audio_generator (device["ID"])) for device in devices if device["Type"] == "Playback"]))
+
 def set_audio (device_id):
     completedProcess = subprocess.run (["PowerShell.exe", "Set-AudioDevice", "-ID", f'"{device_id}"'])
     if completedProcess.returncode != 0:
@@ -44,7 +62,7 @@ def set_mode (mode):
     set_display (mode["displays"])
     sleep (1)
     set_audio (mode["audio"])
-    
+
 
 def load_menuitems ():
     global settings, icon
@@ -62,6 +80,8 @@ def make_icon ():
     icon = Icon ('test',
                 create_image(),
                 menu = Menu (*load_menuitems(),
+                             Menu.SEPARATOR,
+                             load_playback_menu (),
                              Menu.SEPARATOR,
                              MenuItem ("Edit config", lambda: webbrowser.open (configPath)),
                              MenuItem ("Info",        lambda: icon.notify ("AudioVisualConfigurator v0.0 by Balazzs")),
