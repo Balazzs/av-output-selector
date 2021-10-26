@@ -22,7 +22,6 @@ def create_image():
     return image
 
 exit = False
-settings = {}
 
 def close ():
     global exit, icon
@@ -65,7 +64,6 @@ def set_mode (mode):
 
 
 def load_menuitems ():
-    global settings, icon
     try:
         settings = json.loads(configPath.read_text ())
         
@@ -73,6 +71,7 @@ def load_menuitems ():
         
         return [MenuItem (mode["name"], set_mode_generator (mode)) for mode in settings["modes"]]
     except:
+        global icon
         icon.notify ("Error loading config file")
 
 def make_icon ():
