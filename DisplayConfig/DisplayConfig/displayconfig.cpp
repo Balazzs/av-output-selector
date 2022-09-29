@@ -99,9 +99,11 @@ void SetConnections (const std::map<std::wstring, bool>& monitorStates)
 
 int wmain (int argc, wchar_t** argv)
 {
-    if (argc % 2 != 1) {
+    const bool badArgCount = argc % 2 != 1;
+    if (badArgCount) {
         std::cerr << "Wrong input format, give \"monitor_name\" [on|off] values in pairs" << std::endl;
-        return 1;
+        const bool noArguments = argc == 1;
+        return noArguments ? 0 : 1;
     }
 
     std::map<std::wstring, bool> monitorStates;
@@ -116,7 +118,6 @@ int wmain (int argc, wchar_t** argv)
 
         monitorStates[std::wstring (argv[i])] = (state == L"on");
     }
-
 
     SetConnections (monitorStates);
 }
