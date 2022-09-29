@@ -7,6 +7,7 @@ import json
 import webbrowser
 import subprocess
 import re
+from fnmatch import fnmatch
 from time import sleep
 
 configPath     = Path (__file__).parent / "config.json"
@@ -51,7 +52,23 @@ def load_playback_menu ():
     set_audio_generator = lambda device_id: lambda: set_audio (device_id)
     return MenuItem ("Sound", Menu (*[MenuItem (device["Name"], set_audio_generator (device["ID"])) for device in devices if device["Type"] == "Playback"]))
 
+def get_device_id (name):
+    devices = parse_audio_config ()
+    devices_with_name = [device for device in devices if fnmatch(device["Name"], name) and device["Type"] == "Playback"]
+    if len(devices_with_name) == 0:
+        icon.notify(f"Error: No device audio playback device found with name \"{name}\"")
+        return None
+    elif len(devices_with_name) > 1:
+        icon.notify(f"Warning: Multiple audio playback devices found with name \"{name}\"\nPicking the first one")
+    return devices_with_name[0]["ID"]
+
 def set_audio (device_id):
+    id_pattern = r"{[0-9a-fA-F.]*}.{[0-9a-fA-F\-]*}"
+    if not re.match(id_pattern, device_id):
+        device_id = get_device_id (device_id)
+        if device_id is None:
+            return
+
     completedProcess = subprocess.run (["PowerShell.exe", "Set-AudioDevice", "-ID", f'"{device_id}"'])
     if completedProcess.returncode != 0:
         icon.notify ("Error setting default audio playback device")
