@@ -49,7 +49,7 @@ void SetConnections (const std::map<std::wstring, bool>& monitorStates)
     auto pathInfoArray = GetPathInfoArray ();
 
     std::vector<Connection> connections;
-
+    std::vector<DISPLAYCONFIG_PATH_INFO> changedPathInfos;
 
     DISPLAYCONFIG_SOURCE_DEVICE_NAME sourceName = {};
     sourceName.header.type = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
@@ -89,11 +89,15 @@ void SetConnections (const std::map<std::wstring, bool>& monitorStates)
             pathInfo.targetInfo.id = preferedMode.header.id;
             pathInfo.sourceInfo.modeInfoIdx = DISPLAYCONFIG_PATH_MODE_IDX_INVALID;
             pathInfo.targetInfo.modeInfoIdx = DISPLAYCONFIG_PATH_MODE_IDX_INVALID;
+            
+            changedPathInfos.push_back(pathInfo);
         }
     }
 
-    SetDisplayConfig (pathInfoArray.size (), pathInfoArray.data (), 0, NULL, (SDC_VALIDATE | SDC_TOPOLOGY_SUPPLIED | SDC_ALLOW_PATH_ORDER_CHANGES));
-    SetDisplayConfig (pathInfoArray.size (), pathInfoArray.data (), 0, NULL, (SDC_APPLY | SDC_TOPOLOGY_SUPPLIED | SDC_ALLOW_PATH_ORDER_CHANGES));
+    auto ret = SetDisplayConfig (changedPathInfos.size (), changedPathInfos.data (), 0, NULL, (SDC_APPLY | SDC_TOPOLOGY_SUPPLIED | SDC_ALLOW_PATH_ORDER_CHANGES));
+    if (ret != ERROR_SUCCESS) {
+        ret = SetDisplayConfig(changedPathInfos.size(), changedPathInfos.data(), 0, NULL, (SDC_APPLY | SDC_ALLOW_CHANGES | SDC_USE_SUPPLIED_DISPLAY_CONFIG));
+    }
 }
 
 
