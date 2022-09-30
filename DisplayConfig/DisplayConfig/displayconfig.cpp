@@ -44,7 +44,7 @@ bool IsAlreadyConnected (DISPLAYCONFIG_SOURCE_DEVICE_NAME       sourceName,
                         });
 }
 
-void SetConnections (const std::map<std::wstring, bool>& monitorStates)
+auto SetConnections (const std::map<std::wstring, bool>& monitorStates)
 {
     auto pathInfoArray = GetPathInfoArray ();
 
@@ -98,6 +98,7 @@ void SetConnections (const std::map<std::wstring, bool>& monitorStates)
     if (ret != ERROR_SUCCESS) {
         ret = SetDisplayConfig(changedPathInfos.size(), changedPathInfos.data(), 0, NULL, (SDC_APPLY | SDC_ALLOW_CHANGES | SDC_USE_SUPPLIED_DISPLAY_CONFIG));
     }
+    return ret;
 }
 
 
@@ -123,5 +124,8 @@ int wmain (int argc, wchar_t** argv)
         monitorStates[std::wstring (argv[i])] = (state == L"on");
     }
 
-    SetConnections (monitorStates);
+    auto ret = SetConnections (monitorStates);
+    if (ret != ERROR_SUCCESS) {
+        return 1;
+    }
 }
