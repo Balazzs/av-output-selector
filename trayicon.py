@@ -31,9 +31,10 @@ def close ():
 
 def set_display (displays):
     params = [x for display, on_off in displays.items() for x in [display, on_off]]
-    completedProcess = subprocess.run ([displayExePath] + params)
+    completedProcess = subprocess.run ([displayExePath] + params, capture_output=True)
     if completedProcess.returncode != 0:
         icon.notify ("Error while setting displays")
+        print(completedProcess.stdout)
 
 def parse_audio_config():
     completedProcess = subprocess.run(["PowerShell", "Get-AudioDevice", "-List"], capture_output=True, text=True)
