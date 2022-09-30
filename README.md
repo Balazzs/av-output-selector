@@ -13,6 +13,8 @@ This project is meant to be that.
 
 Enables / Disables displays by name. Uses windows API. Made by a large amount of copy-paste, google searches and a lot of documentation reading. PhysicalMonitor and HMONITOR solutions were also considered but this is the easiest solution, looping through all the possible `DISPLAYCONFIG_PATH_INFO`s from `QueryDisplayConfig` and getting devicve info with `DisplayConfigGetDeviceInfo` then calling a `SetDisplayConfig` on the modified paths.
 
+Note that there are 2 `SetDisplayConfig` calls, initially the program tries to set only the activeness of the monitors to an already existing setup (you already had your monitors setup like that in Display Settings before), if that fails then it creates a new setup. In the later case configuring it afterwards is advised, e.g. for me the refresh rate and main screen were initially not the way I preferred them.
+
 Requires Windows SDK (and maybe WDK ?).
 
 ## Default audio playback device setter
