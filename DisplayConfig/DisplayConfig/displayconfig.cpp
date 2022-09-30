@@ -85,7 +85,7 @@ auto SetConnections (const std::map<std::wstring, bool>& monitorStates)
                 }
             }
 
-            pathInfo.sourceInfo.id = connections.size ();
+            pathInfo.sourceInfo.id = (UINT32) connections.size ();
             pathInfo.targetInfo.id = preferedMode.header.id;
             pathInfo.sourceInfo.modeInfoIdx = DISPLAYCONFIG_PATH_MODE_IDX_INVALID;
             pathInfo.targetInfo.modeInfoIdx = DISPLAYCONFIG_PATH_MODE_IDX_INVALID;
@@ -94,9 +94,9 @@ auto SetConnections (const std::map<std::wstring, bool>& monitorStates)
         }
     }
 
-    auto ret = SetDisplayConfig (changedPathInfos.size (), changedPathInfos.data (), 0, NULL, (SDC_APPLY | SDC_TOPOLOGY_SUPPLIED | SDC_ALLOW_PATH_ORDER_CHANGES));
+    auto ret = SetDisplayConfig ((UINT32) changedPathInfos.size (), changedPathInfos.data (), 0, NULL, (SDC_APPLY | SDC_TOPOLOGY_SUPPLIED | SDC_ALLOW_PATH_ORDER_CHANGES));
     if (ret != ERROR_SUCCESS) {
-        ret = SetDisplayConfig(changedPathInfos.size(), changedPathInfos.data(), 0, NULL, (SDC_APPLY | SDC_ALLOW_CHANGES | SDC_USE_SUPPLIED_DISPLAY_CONFIG));
+        ret = SetDisplayConfig((UINT32) changedPathInfos.size(), changedPathInfos.data(), 0, NULL, (SDC_APPLY | SDC_ALLOW_CHANGES | SDC_USE_SUPPLIED_DISPLAY_CONFIG));
     }
     return ret;
 }
